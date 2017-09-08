@@ -12,15 +12,26 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
         $this->object = new RolePlayer();
     }
 
-    public function testCallMissingMethodThrowsException()
+    /**
+     * @dataProvider provideMissingMethodNames
+     */
+    public function testCallMissingMethodThrowsException(string $missingMethodName)
     {
         $exception = null;
         try {
-            $this->object->doIt();
+            $this->object->$missingMethodName();
         } catch (DciException $dciException) {
             $exception = $dciException;
         }
-        $this->assertIsDciException("Missing method doIt", $exception);
+        $this->assertIsDciException("Missing method $missingMethodName", $exception);
+    }
+
+    public function provideMissingMethodNames(): array
+    {
+        return [
+            ['doIt'],
+            ['tellAYourMomJoke'],
+        ];
     }
 
     private function assertIsDciException(string $expectedMessage, $actualException)
