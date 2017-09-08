@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace StillDreamingOne\PurposefulPhp\Examples\Dci;
 
 use StillDreamingOne\PurposefulPhp\Contractor;
-use StillDreamingOne\PurposefulPhp\Condition;
 
 // helps with the DCI style of OO in php
 final class RolePlayer
