@@ -61,19 +61,17 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
 
     public function testInjectAndCallWithOneParam()
     {
-        $injectedMethod = function($add2To) {
-            return $add2To + 2;
-        };
-        $this->object->add2To = $injectedMethod;
+        $this->object->injectMethod('add2To', function ($number) {
+            return $number + 2;
+        });
         $this->assertSame($this->object->add2To(1), 3);
     }
 
     public function testInjectAndCallWithTwoParams()
     {
-        $injectedMethod = function($first, $second) {
+        $this->object->injectMethod('sum', function ($first, $second) {
             return $first + $second;
-        };
-        $this->object->sum = $injectedMethod;
+        });
         $this->assertSame($this->object->sum(2, 7), 9);
     }
 }
