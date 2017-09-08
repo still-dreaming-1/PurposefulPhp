@@ -40,13 +40,23 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($actualException->getMessage(), $expectedMessage);
     }
 
-    public function testInjectAndCall()
+    /**
+     * @dataProvider provideInjectMethodNamesAndReturnValues
+     */
+    public function testInjectAndCall(string $injectMethodName, $returnValue)
     {
-        $injectedMethod = function() {
-            return 5;
-        };
-        $this->object->getFive = $injectedMethod;
-        $this->assertSame($this->object->getFive(), 5);
+        $this->object->injectMethod($injectMethodName, function () use ($returnValue) {
+            return $returnValue;
+        });
+        $this->assertSame($this->object->$injectMethodName(), $returnValue);
+    }
+
+    public function provideInjectMethodNamesAndReturnValues(): array
+    {
+        return [
+            ['getFive', 5],
+            ['returnA', 'a'],
+        ];
     }
 
     public function testInjectAndCallWithOneParam()

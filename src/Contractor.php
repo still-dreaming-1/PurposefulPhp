@@ -7,6 +7,7 @@ final class Contractor
 {
     private $arguments;
     private $customer;
+    private $postcondition;
 
     public function setCustomer($customer)
     {
@@ -18,8 +19,17 @@ final class Contractor
         $this->arguments = $arguments;
     }
 
+    public function addPostcondition(Condition $condition)
+    {
+        $this->postcondition = $condition;
+    }
+
     public function fulfill()
     {
+        if ($this->postcondition !== null) {
+            $this->customer->{$this->arguments[0]} = $this->arguments[1];
+            return;
+        }
         if (!\property_exists($this->customer, $this->arguments[0])) {
             throw new \StillDreamingOne\PurposefulPhp\Examples\Dci\DciException("Missing method ".$this->arguments[0]);
         }
