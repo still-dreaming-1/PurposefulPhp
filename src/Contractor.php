@@ -31,8 +31,17 @@ final class Contractor
             return;
         }
         if (!\property_exists($this->customer, $this->arguments[0])) {
-            throw new \StillDreamingOne\PurposefulPhp\Examples\Dci\DciException("Missing method ".$this->arguments[0]);
+            $this->throwMissingMethodException($this->arguments[0]);
         }
-        return \call_user_func_array($this->customer->{$this->arguments[0]}, $this->arguments[1]);
+        $possibleClosure = $this->customer->{$this->arguments[0]};
+        if ($possibleClosure instanceof \Closure) {
+            return \call_user_func_array($possibleClosure, $this->arguments[1]);
+        }
+        $this->throwMissingMethodException($this->arguments[0]);
+    }
+
+    private function throwMissingMethodException(string $methodName)
+    {
+        throw new \StillDreamingOne\PurposefulPhp\Examples\Dci\DciException("Missing method ".$methodName);
     }
 }

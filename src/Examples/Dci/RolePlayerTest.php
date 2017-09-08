@@ -23,7 +23,7 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
         } catch (DciException $dciException) {
             $exception = $dciException;
         }
-        $this->assertIsDciException("Missing method $missingMethodName", $exception);
+        $this->assertIsDciMissingMethodException($missingMethodName, $exception);
     }
 
     public function provideMissingMethodNames(): array
@@ -34,10 +34,10 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    private function assertIsDciException(string $expectedMessage, $actualException)
+    private function assertIsDciMissingMethodException(string $methodName, $actualException)
     {
         $this->assertInstanceOf(DciException::class, $actualException);
-        $this->assertSame($actualException->getMessage(), $expectedMessage);
+        $this->assertSame($actualException->getMessage(), "Missing method $methodName");
     }
 
     /**
@@ -73,5 +73,17 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
             return $first + $second;
         });
         $this->assertSame($this->object->sum(2, 7), 9);
+    }
+
+    public function testTryCallNonExistentMethodWhenUnrelatedPropertyOfSameNameExistsThrowsException()
+    {
+        $this->object->five = 5;
+        $exception = null;
+        try {
+            $this->object->five();
+        } catch (DciException $dciException) {
+            $exception = $dciException;
+        }
+        $this->assertIsDciMissingMethodException('five', $exception);
     }
 }
