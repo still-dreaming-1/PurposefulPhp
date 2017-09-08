@@ -20,6 +20,9 @@ final class Contractor
 
     public function fulfill()
     {
+        if (!\property_exists($this->customer, $this->arguments[0])) {
+            throw new \StillDreamingOne\PurposefulPhp\Examples\Dci\DciException("Missing method doIt");
+        }
         return \call_user_func_array($this->customer->{$this->arguments[0]}, $this->arguments[1]);
     }
 }
