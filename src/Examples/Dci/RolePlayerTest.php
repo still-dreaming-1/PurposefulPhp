@@ -30,7 +30,7 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
     {
         return [
             ['doIt'],
-            /* ['tellAYourMomJoke'], */
+            ['tellAYourMomJoke'],
         ];
     }
 
