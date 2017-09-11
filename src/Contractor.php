@@ -6,15 +6,26 @@ namespace StillDreamingOne\PurposefulPhp;
 final class Contractor
 {
     private $customer;
+    private $jobTypeGroup;
 
-    public function setCustomer($customer)
+    public function __construct()
+    {
+        $this->jobTypeGroup = [];
+    }
+
+    public function setCustomer($customer): void
     {
         $this->customer = $customer;
     }
 
-    public function perform($job)
+    public function addJobType(JobType $jobType): void
     {
-        if ($job->postcondition !== null) {
+        $this->jobTypeGroup[$jobType->name] = $jobType;
+    }
+
+    public function perform(Job $job)
+    {
+        if ($job->jobType->postcondition !== null) {
             $this->customer->{$job->arguments[0]} = $job->arguments[1];
             return;
         }
