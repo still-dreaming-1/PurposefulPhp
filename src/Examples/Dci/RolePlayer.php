@@ -5,27 +5,36 @@ namespace StillDreamingOne\PurposefulPhp\Examples\Dci;
 
 use StillDreamingOne\PurposefulPhp\{
     Contractor,
+    Job,
     Condition
 };
 
 // helps with the DCI style of OO in php
 final class RolePlayer
 {
+    private $contractor;
+
+    public function __construct()
+    {
+        $this->contractor = new Contractor();
+        $this->contractor->setCustomer($this);
+    }
+
     public function injectMethod(string $name, \Closure $method)
     {
-        $contractor = new Contractor();
-        $contractor->setCustomer($this);
-        $contractor->setArguments(\func_get_args());
+        $job = new Job();
+        $job->setName(__FUNCTION__);
+        $job->setArguments(\func_get_args());
         $condition = new Condition();
-        $contractor->addPostcondition($condition);
-        $contractor->fulfill();
+        $job->addPostcondition($condition);
+        $this->contractor->perform($job);
     }
 
     public function __call(string $name, $arguments)
     {
-        $contractor = new Contractor();
-        $contractor->setCustomer($this);
-        $contractor->setArguments(\func_get_args());
-        return $contractor->fulfill();
+        $job = new Job();
+        $job->setName(__FUNCTION__);
+        $job->setArguments(\func_get_args());
+        return $this->contractor->perform($job);
     }
 }
