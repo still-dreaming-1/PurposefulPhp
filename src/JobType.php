@@ -5,22 +5,44 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class JobType
 {
-    public $name;
-    public $postcondition;
-    public $relationship;
+    private $name;
+    /**
+     * @var array
+     */
+    private $postconditionGroup;
+    /**
+     * @var array
+     */
+    private $relationshipGroup;
+
+    public function __construct()
+    {
+        $this->postconditionGroup = [];
+        $this->relationshipGroup = [];
+    }
+
+    public function addPostcondition(Condition $condition)
+    {
+        $this->postconditionGroup[] = $condition;
+    }
+
+    public function hasPostconditions(): bool
+    {
+        return !empty($this->postconditionGroup);
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
     public function setName(string $name)
     {
         $this->name = $name;
     }
 
-    public function addPostcondition(Condition $condition)
-    {
-        $this->postcondition = $condition;
-    }
-
     public function addRelationship(JobRelationship $relationship)
     {
-        $this->relationship = $relationship;
+        $this->relationshipGroup[] = $relationship;
     }
 }

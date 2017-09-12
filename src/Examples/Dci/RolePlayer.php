@@ -31,12 +31,12 @@ final class RolePlayer
         $this->contractor->perform($job);
     }
 
-    private function addInjectMethodJobType($name): JobType
+    private function addInjectMethodJobType(string $name): JobType
     {
         $jobType = new JobType();
         $jobType->setName($name);
         $relationship = new JobRelationship();
-        $relationship->performedBefore('__call');
+        $relationship->setPerformedBefore('__call');
         $jobType->addRelationship($relationship);
         $condition = new Condition();
         $jobType->addPostcondition($condition);
@@ -54,12 +54,12 @@ final class RolePlayer
         return $returnValue;
     }
 
-    private function addCallJobType($jobName): JobType
+    private function addCallJobType(string $jobName): JobType
     {
         $jobType = new JobType();
         $jobType->setName($jobName);
         $relationship = new JobRelationship();
-        $relationship->performedAfter('injectMethod');
+        $relationship->setPerformedAfter('injectMethod');
         $jobType->addRelationship($relationship);
         /* $condition = new Condition(); */
         /* $jobType->addPostcondition($condition); */

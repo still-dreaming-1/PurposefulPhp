@@ -20,12 +20,12 @@ final class Contractor
 
     public function addJobType(JobType $jobType): void
     {
-        $this->jobTypeGroup[$jobType->name] = $jobType;
+        $this->jobTypeGroup[$jobType->getName()] = $jobType;
     }
 
     public function perform(Job $job)
     {
-        if ($job->jobType->postcondition !== null) {
+        if ($job->jobType->hasPostconditions()) {
             $this->customer->{$job->arguments[0]} = $job->arguments[1];
             return;
         }
