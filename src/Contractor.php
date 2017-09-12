@@ -39,7 +39,7 @@ final class Contractor
         $this->throwMissingMethodException($job->arguments[0]);
     }
 
-    private function throwMissingMethodException(string $methodName)
+    private function throwMissingMethodException(string $methodName): void
     {
         throw new \StillDreamingOne\PurposefulPhp\Examples\Dci\DciException("Missing method ".$methodName);
     }
