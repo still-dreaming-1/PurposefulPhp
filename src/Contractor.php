@@ -35,8 +35,8 @@ final class Contractor
             $this->throwMissingMethodException($job->arguments[0]);
         }
         $callResult = $this->tryPerformCallInjected();
-        if ($callResult->wasCalled) {
-            return $callResult->callReturnValue;
+        if ($callResult->wasSuccessful) {
+            return $callResult->value;
         }
         $this->throwMissingMethodException($job->arguments[0]);
     }
@@ -46,16 +46,13 @@ final class Contractor
         $this->customer->{$this->currentJob->arguments[0]} = $this->currentJob->arguments[1];
     }
 
-    private function tryPerformCallInjected()
+    private function tryPerformCallInjected(): Result
     {
         $possibleClosure = $this->customer->{$this->currentJob->arguments[0]};
-        $result = new class {
-            public $wasCalled = false;
-            public $callReturnValue;
-        };
+        $result = new Result();
         if ($possibleClosure instanceof \Closure) {
-            $result->wasCalled = true;
-            $result->callReturnValue = \call_user_func_array($possibleClosure, $this->currentJob->arguments[1]);
+            $result->wasSuccessful = true;
+            $result->value = \call_user_func_array($possibleClosure, $this->currentJob->arguments[1]);
         }
         return $result;
     }
