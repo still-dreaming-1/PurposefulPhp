@@ -7,6 +7,7 @@ final class Contractor
 {
     private $customer;
     private $jobTypeGroup;
+    private $currentJob;
 
     public function __construct()
     {
@@ -25,8 +26,9 @@ final class Contractor
 
     public function perform(Job $job)
     {
+        $this->currentJob = $job;
         if ($job->jobType->hasPostconditions()) {
-            $this->customer->{$job->arguments[0]} = $job->arguments[1];
+            $this->performInjection();
             return;
         }
         if (!\property_exists($this->customer, $job->arguments[0])) {
@@ -37,6 +39,11 @@ final class Contractor
             return \call_user_func_array($possibleClosure, $job->arguments[1]);
         }
         $this->throwMissingMethodException($job->arguments[0]);
+    }
+
+    private function performInjection()
+    {
+        $this->customer->{$this->currentJob->arguments[0]} = $this->currentJob->arguments[1];
     }
 
     private function throwMissingMethodException(string $methodName): void
