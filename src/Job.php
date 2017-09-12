@@ -13,4 +13,9 @@ final class Job
      * @var \StillDreamingOne\PurposefulPhp\JobType
      */
     public $jobType;
+
+    public function __construct()
+    {
+        $this->arguments = [];
+    }
 }
