@@ -34,16 +34,30 @@ final class Contractor
         if (!\property_exists($this->customer, $job->arguments[0])) {
             $this->throwMissingMethodException($job->arguments[0]);
         }
-        $possibleClosure = $this->customer->{$job->arguments[0]};
-        if ($possibleClosure instanceof \Closure) {
-            return \call_user_func_array($possibleClosure, $job->arguments[1]);
+        $callResult = $this->tryPerformCallInjected();
+        if ($callResult->wasCalled) {
+            return $callResult->callReturnValue;
         }
         $this->throwMissingMethodException($job->arguments[0]);
     }
 
-    private function performInjection()
+    private function performInjection(): void
     {
         $this->customer->{$this->currentJob->arguments[0]} = $this->currentJob->arguments[1];
+    }
+
+    private function tryPerformCallInjected()
+    {
+        $possibleClosure = $this->customer->{$this->currentJob->arguments[0]};
+        $result = new class {
+            public $wasCalled = false;
+            public $callReturnValue;
+        };
+        if ($possibleClosure instanceof \Closure) {
+            $result->wasCalled = true;
+            $result->callReturnValue = \call_user_func_array($possibleClosure, $this->currentJob->arguments[1]);
+        }
+        return $result;
     }
 
     private function throwMissingMethodException(string $methodName): void
