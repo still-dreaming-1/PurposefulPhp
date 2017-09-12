@@ -45,4 +45,9 @@ final class JobType
     {
         $this->relationshipGroup[] = $relationship;
     }
+
+    public function getRelationships(): array
+    {
+        return $this->relationshipGroup;
+    }
 }
