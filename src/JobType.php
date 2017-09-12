@@ -21,7 +21,7 @@ final class JobType
         $this->relationshipGroup = [];
     }
 
-    public function addPostcondition(Condition $condition)
+    public function addPostcondition(Condition $condition): void
     {
         $this->postconditionGroup[] = $condition;
     }
