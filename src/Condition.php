@@ -5,4 +5,13 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class Condition
 {
+    public function when(): When
+    {
+        return new When();
+    }
+
+    public function then(): Then
+    {
+        return new Then();
+    }
 }

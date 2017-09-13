@@ -5,8 +5,8 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class JobRelationship
 {
-    private $performedAfter;
-    private $performedBefore;
+    private $performedAfter; // should be a precondition when calling an injected
+    private $performedBefore; // should be a postcondition when injecting
 
     public function setPerformedAfter(string $jobName): void
     {
