@@ -8,10 +8,13 @@ final class Contractor
     private $customer;
     private $jobTypeGroup;
     private $currentJob;
+    private $properties;
 
     public function __construct()
     {
         $this->jobTypeGroup = [];
+        $this->properties = [];
+        $this->properties['injectedMethodGroup'] = [];
     }
 
     public function setCustomer($customer): void
@@ -27,32 +30,38 @@ final class Contractor
     public function perform(Job $job)
     {
         $this->currentJob = $job;
-        if ($job->jobType->hasPostconditions()) {
-            $this->performInjection();
-            return;
+        $relationshipGroup = $job->jobType->getRelationships();
+        foreach ($relationshipGroup as $relationship) {
+            if ($relationship->getPerformedBefore() !== null) {
+                $this->performInjection();
+                return;
+            }
         }
-        if (!\property_exists($this->customer, $job->arguments[0])) {
-            $this->throwMissingMethodException($job->arguments[0]);
+        foreach ($relationshipGroup as $relationship) {
+            if ($relationship->getPerformedAfter() !== null) {
+                $callResult = $this->tryPerformCallInjected();
+                if ($callResult->wasSuccessful) {
+                    return $callResult->value;
+                }
+                $this->throwMissingMethodException($job->arguments[0]);
+            }
         }
-        $callResult = $this->tryPerformCallInjected();
-        if ($callResult->wasSuccessful) {
-            return $callResult->value;
-        }
-        $this->throwMissingMethodException($job->arguments[0]);
     }
 
     private function performInjection(): void
     {
-        $this->customer->{$this->currentJob->arguments[0]} = $this->currentJob->arguments[1];
+        $this->properties['injectedMethodGroup'][] = array($this->currentJob->arguments[0], $this->currentJob->arguments[1]);
     }
 
     private function tryPerformCallInjected(): Result
     {
-        $possibleClosure = $this->customer->{$this->currentJob->arguments[0]};
         $result = new Result();
-        if ($possibleClosure instanceof \Closure) {
-            $result->wasSuccessful = true;
-            $result->value = \call_user_func_array($possibleClosure, $this->currentJob->arguments[1]);
+        foreach ($this->properties['injectedMethodGroup'] as $injectedMethod) {
+            if ($injectedMethod[0] === $this->currentJob->arguments[0]) {
+                $result->wasSuccessful = true;
+                $result->value = \call_user_func_array($injectedMethod[1], $this->currentJob->arguments[1]);
+                break;
+            }
         }
         return $result;
     }

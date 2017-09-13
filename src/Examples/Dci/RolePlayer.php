@@ -38,8 +38,8 @@ final class RolePlayer
         $relationship = new JobRelationship();
         $relationship->setPerformedBefore('__call');
         $jobType->addRelationship($relationship);
-        $condition = new Condition();
-        $jobType->addPostcondition($condition);
+        /* $condition = new Condition(); */
+        /* $jobType->addPostcondition($condition); */
         $this->contractor->addJobType($jobType);
         return $jobType;
     }
