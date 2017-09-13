@@ -89,18 +89,15 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
 
     public function testCannotCallManuallyInjectedMethods()
     {
-        $enabled = false;
-        if ($enabled) { // poor man's feature toggle
-            $this->object->returnFive = function () {
-                return 5;
-            };
-            $exception = null;
-            try {
-                $this->object->returnFive();
-            } catch (DciException $dciException) {
-                $exception = $dciException;
-            }
-            $this->assertIsDciMissingMethodException('returnFive', $exception);
+        $this->object->returnFive = function () {
+            return 5;
+        };
+        $exception = null;
+        try {
+            $this->object->returnFive();
+        } catch (DciException $dciException) {
+            $exception = $dciException;
         }
+        $this->assertIsDciMissingMethodException('returnFive', $exception);
     }
 }

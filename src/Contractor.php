@@ -7,10 +7,14 @@ final class Contractor
 {
     private $customer;
     private $jobTypeGroup;
+    private $currentJob;
+    private $properties;
 
     public function __construct()
     {
         $this->jobTypeGroup = [];
+        $this->properties = [];
+        $this->properties['injectedMethodGroup'] = [];
     }
 
     public function setCustomer($customer): void
@@ -25,21 +29,44 @@ final class Contractor
 
     public function perform(Job $job)
     {
-        if ($job->jobType->hasPostconditions()) {
-            $this->customer->{$job->arguments[0]} = $job->arguments[1];
-            return;
+        $this->currentJob = $job;
+        $relationshipGroup = $job->jobType->getRelationships();
+        foreach ($relationshipGroup as $relationship) {
+            if ($relationship->getPerformedBefore() !== null) {
+                $this->performInjection();
+                return;
+            }
         }
-        if (!\property_exists($this->customer, $job->arguments[0])) {
-            $this->throwMissingMethodException($job->arguments[0]);
+        foreach ($relationshipGroup as $relationship) {
+            if ($relationship->getPerformedAfter() !== null) {
+                $callResult = $this->tryPerformCallInjected();
+                if ($callResult->wasSuccessful) {
+                    return $callResult->value;
+                }
+                $this->throwMissingMethodException($job->arguments[0]);
+            }
         }
-        $possibleClosure = $this->customer->{$job->arguments[0]};
-        if ($possibleClosure instanceof \Closure) {
-            return \call_user_func_array($possibleClosure, $job->arguments[1]);
-        }
-        $this->throwMissingMethodException($job->arguments[0]);
     }
 
-    private function throwMissingMethodException(string $methodName)
+    private function performInjection(): void
+    {
+        $this->properties['injectedMethodGroup'][] = array($this->currentJob->arguments[0], $this->currentJob->arguments[1]);
+    }
+
+    private function tryPerformCallInjected(): Result
+    {
+        $result = new Result();
+        foreach ($this->properties['injectedMethodGroup'] as $injectedMethod) {
+            if ($injectedMethod[0] === $this->currentJob->arguments[0]) {
+                $result->wasSuccessful = true;
+                $result->value = \call_user_func_array($injectedMethod[1], $this->currentJob->arguments[1]);
+                break;
+            }
+        }
+        return $result;
+    }
+
+    private function throwMissingMethodException(string $methodName): void
     {
         throw new \StillDreamingOne\PurposefulPhp\Examples\Dci\DciException("Missing method ".$methodName);
     }

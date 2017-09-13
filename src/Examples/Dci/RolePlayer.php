@@ -22,7 +22,7 @@ final class RolePlayer
         $this->contractor->setCustomer($this);
     }
 
-    public function injectMethod(string $name, \Closure $method)
+    public function injectMethod(string $name, \Closure $method): void
     {
         $jobType = $this->addInjectMethodJobType(__FUNCTION__);
         $job = new Job();
@@ -38,13 +38,13 @@ final class RolePlayer
         $relationship = new JobRelationship();
         $relationship->setPerformedBefore('__call');
         $jobType->addRelationship($relationship);
-        $condition = new Condition();
-        $jobType->addPostcondition($condition);
+        /* $condition = new Condition(); */
+        /* $jobType->addPostcondition($condition); */
         $this->contractor->addJobType($jobType);
         return $jobType;
     }
 
-    public function __call(string $name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         $jobType = $this->addCallJobType(__FUNCTION__);
         $job = new Job();
