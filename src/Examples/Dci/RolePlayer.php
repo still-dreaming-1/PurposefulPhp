@@ -23,14 +23,7 @@ final class RolePlayer
     }
 
     /**
-     * Postcondition:
-     * when {
-     *    $this->__call($name, $method)
-     * } then {
-     *    called closure {
-     *      $method;
-     *    }
-     * }
+     * Relationship: getInjectMethodAndCallRelationship
      */
     public function injectMethod(string $name, \Closure $method): void
     {
@@ -45,13 +38,7 @@ final class RolePlayer
     {
         $jobType = new JobType();
         $jobType->setName($jobName);
-        $jobType->addRelationship($this->getInjectMethodAndCallRelationship());
-        $postcondition = new Condition();
-        $postcondition->when()
-            ->customerCallsWith('__call', $nameParam, $methodParam);
-        $postcondition->then()
-            ->closureIsCalledWithParam($methodParam, 'arguments');
-        $jobType->addPostcondition($postcondition);
+        $jobType->addRelationship($this->getInjectMethodAndCallRelationship($nameParam, $methodParam));
         $this->contractor->addJobType($jobType);
         return $jobType;
     }
@@ -67,33 +54,25 @@ final class RolePlayer
      *     }
      * }
      */
-    private function getInjectMethodAndCallRelationship(): Condition
+    private function getInjectMethodAndCallRelationship(string $name, \Closure $method): Condition
     {
-        $condition = new Condition();
-        $injectMethodArg = new Argument();
-        $injectNameArg = new Argument();
-        $injectMethodArg = new Argument();
-        $callNameArg = new Argument();
-        $callArgumentsArg = new Argument();
-        $condition
+        $relationship = new Condition();
+        $nameTrap = new ArgumentTrap();
+        $methodTrap = new ArgumentTrap();
+        $argumentsTrap = new ArgumentTrap();
+        $relationship
             ->when()
-                ->customerCallsWith('injectMethod', $injectNameArg, $injectMethodArg)
+                ->customerCallsWith('injectMethod', $nameTrap, $methodTrap)
             ->andThen()
-                ->customerCallsWith('__call', $callNameArg, $callArgumentsArg);
-        $condition
+                ->customerCallsWith('__call', new ArgumentTest($nameTrap), $argumentsTrap);
+        $relationship
             ->then()
-                ->closureIsCalledWithParam($injectMethodArg, $callArgumentsArg);
-        return $condition;
+                ->closureIsCalledWithParam($methodTrap, $argumentsTrap);
+        return $relationship;
     }
 
     /**
-     * Precondition:
-     * $this->injectMethod($name, any: \Closure $method)
-     *
-     * Postcondition:
-     * called
-     *     closure: $method
-     *     with: $arguments
+     * Relationship: getInjectMethodAndCallRelationship
      */
     public function __call(string $name, array $arguments)
     {
@@ -101,8 +80,7 @@ final class RolePlayer
         $job = new Job();
         $job->jobType = $jobType;
         $job->arguments = \func_get_args();
-        $returnValue = $this->contractor->perform($job);
-        return $returnValue;
+        return $this->contractor->perform($job);
     }
 
     private function addCallJobType(string $jobName, string $nameArg, array $argumentsArg): JobType
@@ -110,15 +88,12 @@ final class RolePlayer
         $jobType = new JobType();
         $jobType->setName($jobName);
 
-        $precondition = new Condition();
         $jobType->addRelationship($this->getInjectMethodAndCallRelationship());
-        $jobType->addPrecondition($precondition);
+        $precondition = new Condition();
         $preconditionAnyClosure = new Any(\Closure::class);
         $precondition->customerCalledWith('injectMethod', $nameArg, $preconditionAnyClosure); // required arguments left off can be anything
+        $jobType->addPrecondition($precondition);
 
-        $postcondition = new Condition();
-        $postcondition->closureIsCalledWithParam($preconditionAnyClosure, $argumentsArg);
-        $jobType->addPostcondition($postcondition);
         $this->contractor->addJobType($jobType);
         return $jobType;
     }
