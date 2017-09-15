@@ -41,7 +41,7 @@ final class JobType
         $this->name = $name;
     }
 
-    public function addRelationship(JobRelationship $relationship)
+    public function addRelationship(Condition $relationship)
     {
         $this->relationshipGroup[] = $relationship;
     }

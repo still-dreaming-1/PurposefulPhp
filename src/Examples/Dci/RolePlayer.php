@@ -7,8 +7,8 @@ use StillDreamingOne\PurposefulPhp\{
     Contractor,
     JobType,
     Job,
-    JobRelationship,
-    Condition
+    Condition,
+    Argument
 };
 
 // helps with the DCI style of OO in php
@@ -45,6 +45,7 @@ final class RolePlayer
     {
         $jobType = new JobType();
         $jobType->setName($jobName);
+        $jobType->addRelationship($this->getInjectMethodAndCallRelationship());
         $postcondition = new Condition();
         $postcondition->when()
             ->customerCallsWith('__call', $nameParam, $methodParam);
@@ -53,6 +54,36 @@ final class RolePlayer
         $jobType->addPostcondition($postcondition);
         $this->contractor->addJobType($jobType);
         return $jobType;
+    }
+
+    /**
+     * when {
+     *     $this->injectMethod($name, $method)
+     * } and then {
+     *     $this->_call($name, $arguments)
+     * } then {
+     *     called closure {
+     *       $method($arguments);
+     *     }
+     * }
+     */
+    private function getInjectMethodAndCallRelationship(): Condition
+    {
+        $condition = new Condition();
+        $injectMethodArg = new Argument();
+        $injectNameArg = new Argument();
+        $injectMethodArg = new Argument();
+        $callNameArg = new Argument();
+        $callArgumentsArg = new Argument();
+        $condition
+            ->when()
+                ->customerCallsWith('injectMethod', $injectNameArg, $injectMethodArg)
+            ->andThen()
+                ->customerCallsWith('__call', $callNameArg, $callArgumentsArg);
+        $condition
+            ->then()
+                ->closureIsCalledWithParam($injectMethodArg, $callArgumentsArg);
+        return $condition;
     }
 
     /**
@@ -80,6 +111,7 @@ final class RolePlayer
         $jobType->setName($jobName);
 
         $precondition = new Condition();
+        $jobType->addRelationship($this->getInjectMethodAndCallRelationship());
         $jobType->addPrecondition($precondition);
         $preconditionAnyClosure = new Any(\Closure::class);
         $precondition->customerCalledWith('injectMethod', $nameArg, $preconditionAnyClosure); // required arguments left off can be anything
