@@ -8,7 +8,7 @@ Watch me code it: https://www.liveedu.tv/still_dreaming_1/ (Don't actually do th
 
 Become a patron: https://www.patreon.com/user?u=7627857 (I will make your wildest programming dreams come true! (not really (ok maybe some of them)))
 
-Warning, PurposefulPhp is still in the very early stages. If you look at the code, you will see there is really nothing too it yet. I haven't even tagged any pre 1.0 releases yet. But if you watch some of my recent videos that show some code not yet in this repository, you can see it is on its' way to becoming something interesting.
+Warning, PurposefulPhp is still in the very early stages. If you look at the code, you will see there is really nothing to it yet. I haven't even tagged any pre 1.0 releases yet. But if you watch some of my recent videos that show some code not yet in this repository, you can see it is on its' way to becoming something interesting.
 
 Here are some ways  to describe PurposefulPhp:
 
@@ -17,7 +17,7 @@ Here are some ways  to describe PurposefulPhp:
 * A contract fulfiller
 * Contracts as code (instead of contracts plus code).
 * A programming paradigm that is perhaps a flavor of declarative programming, or at least has some things in common with it. Structured programming took away gotos. Functional programming took away assignments. Object oriented programming took away function references, or something like that. Purposeful programming takes away explicityly writing implementations and tests.
-* [Dangerous to your psychology.](https://www.reddit.com/r/timetravel/comments/70gw6c/programming_via_time_travel_paradoxes/?st=j7nwxz1e&sh=00148fc7#form-t1_dn36ug3i5s) This library does not conform to elitist notions of what makes sense. If you use it, you run the risk that your thinking will degrade. You could become a pleb, upon which you will no longer be capable of understanding the link between placing food in your mouth to satisfy your hunger, and you will die of starvation.
+* [Dangerous to your psychology.](https://www.reddit.com/r/timetravel/comments/70gw6c/programming_via_time_travel_paradoxes/?st=j7nwxz1e&sh=00148fc7#form-t1_dn36ug3i5s) This library does not conform to elitist notions of what makes sense. If you use it, you run the risk that your thinking will degrade. You could become a pleb, upon which you will no longer be capable of understanding the link between placing food in your mouth and satisfying your hunger, and you will die of starvation.
 
 PurposefulPhp will provide a way to program on a higher level. Writing code with it will feel familiar to people who are already familiar with writing object oriented code in PHP. As much as it might sound like it, it is not used to write machine learning or AI programs, but I guess you could do that with it if you want. It is a way of expressing classes in terms of contracts.
 
