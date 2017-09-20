@@ -8,7 +8,9 @@ use StillDreamingOne\PurposefulPhp\{
     JobType,
     Job,
     Condition,
-    Argument
+    Argument,
+    ArgumentTrap,
+    ArgumentFilter
 };
 
 // helps with the DCI style of OO in php
@@ -64,7 +66,7 @@ final class RolePlayer
             ->when()
                 ->customerCallsWith('injectMethod', $nameTrap, $methodTrap)
             ->andThen()
-                ->customerCallsWith('__call', new ArgumentTest($nameTrap), $argumentsTrap);
+                ->customerCallsWith('__call', new ArgumentFilter($nameTrap), $argumentsTrap);
         $relationship
             ->then()
                 ->closureIsCalledWithParam($methodTrap, $argumentsTrap);
@@ -76,7 +78,7 @@ final class RolePlayer
      */
     public function __call(string $name, array $arguments)
     {
-        $jobType = $this->addCallJobType(__FUNCTION__);
+        $jobType = $this->addCallJobType(__FUNCTION__, $name, $arguments);
         $job = new Job();
         $job->jobType = $jobType;
         $job->arguments = \func_get_args();
