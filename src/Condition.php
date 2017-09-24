@@ -21,7 +21,7 @@ final class Condition
     public function when(): When
     {
         $this->when = new When($this);
-        return $when;
+        return $this->when;
     }
 
     public function andThen(): When
