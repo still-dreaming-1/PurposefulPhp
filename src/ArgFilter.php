@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace StillDreamingOne\PurposefulPhp;
 
-final class ArgumentFilter
+final class ArgFilter
 {
-    public function __construct(ArgumentTrap $argumentTrap)
+    public function __construct(ArgTrap $argTrap)
     {
     }
 }

@@ -10,15 +10,11 @@ final class JobType
      */
     private $name;
     /**
-     * @var \StillDreamingOne\PurposefulPhp\Condition[]
+     * @var Condition[]
      */
     private $postconditionGroup;
     /**
-     * @var \StillDreamingOne\PurposefulPhp\Condition[]
-     */
-    private $relationshipGroup;
-    /**
-     * @var \StillDreamingOne\PurposefulPhp\Condition[]
+     * @var Condition[]
      */
     private $preconditionGroup;
 
@@ -26,7 +22,6 @@ final class JobType
     {
         $this->name = $name;
         $this->postconditionGroup = [];
-        $this->relationshipGroup = [];
     }
 
     public function addPostcondition(Condition $condition): void
@@ -44,21 +39,8 @@ final class JobType
         return $this->name;
     }
 
-    public function addRelationship(Condition $relationship): void
-    {
-        $this->relationshipGroup[] = $relationship;
-    }
-
     public function addPrecondition(Condition $precondition): void
     {
         $this->preconditionGroup[] = $precondition;
-    }
-
-    /**
-     * @return Condition[]
-     */
-    public function getRelationships(): array
-    {
-        return $this->relationshipGroup;
     }
 }

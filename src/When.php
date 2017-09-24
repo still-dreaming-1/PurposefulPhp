@@ -9,6 +9,14 @@ final class When
      * @var Condition
      */
     private $relationship;
+    /**
+     * @var ?string
+     */
+    private $methodName;
+    /**
+     * @var ?array
+     */
+    private $methodArgGroup;
 
     public function __construct(Condition $relationship)
     {
@@ -17,9 +25,21 @@ final class When
     /**
      * After $methodName, pass the parameters it is called with
      */
-    public function customerCallsWith(string $methodName): Condition
+    public function methodCallsWith(string $methodName): Condition
     {
-        $arguments = \func_get_args();
+        $this->methodName = $methodName;
+        $this->methodArgGroup = [];
+        $first = true;
+        foreach(\func_get_args() as $arg) {
+            if ($first) {
+                continue;
+            }
+            $first = false;
+            if (!($arg instanceof ArgTrap) && (!($arg instanceof ArgFilter))) {
+                throw new PurposefulException("expected argument to be an ArgTrap or ArgFilter");
+            }
+            $this->methodArgGroup[] = $arg;
+        }
         return $this->relationship;
     }
 }

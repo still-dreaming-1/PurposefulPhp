@@ -9,38 +9,38 @@ use StillDreamingOne\PurposefulPhp\{
     Job,
     Condition,
     Any,
-    Argument,
-    ArgumentTrap,
-    ArgumentFilter
+    Arg,
+    ArgTrap,
+    ArgFilter
 };
 
 // helps with the DCI style of OO in php
 final class RolePlayer
 {
+    /**
+     * @var Contractor
+     */
     private $contractor;
 
     public function __construct()
     {
         $this->contractor = new Contractor();
         $this->contractor->setCustomer($this);
+        $this->contractor->addRelationship($this->getInjectMethodAndCallRelationship());
     }
 
-    /**
-     * Relationship: getInjectMethodAndCallRelationship
-     */
     public function injectMethod(string $name, \Closure $method): void
     {
         $jobType = $this->addInjectMethodJobType(__FUNCTION__, $name, $method);
         $job = new Job();
         $job->jobType = $jobType;
-        $job->arguments = \func_get_args();
+        $job->args = \func_get_args();
         $this->contractor->perform($job);
     }
 
-    private function addInjectMethodJobType(string $jobName, string $nameParam, \Closure $methodParam): JobType
+    private function addInjectMethodJobType(string $jobName, string $methodName, \Closure $method): JobType
     {
         $jobType = new JobType($jobName);
-        $jobType->addRelationship($this->getInjectMethodAndCallRelationship($nameParam, $methodParam));
         $this->contractor->addJobType($jobType);
         return $jobType;
     }
@@ -49,46 +49,42 @@ final class RolePlayer
      * when {
      *     $this->injectMethod($name, $method)
      * } and then {
-     *     $this->_call($name, $arguments)
+     *     $this->_call($name, $args)
      * } then {
      *     called closure {
-     *       $method($arguments);
+     *       $method($args);
      *     }
      * }
      */
-    private function getInjectMethodAndCallRelationship(string $name, ?\Closure $method): Condition
+    private function getInjectMethodAndCallRelationship(): Condition
     {
         $relationship = new Condition();
-        $nameTrap = new ArgumentTrap();
-        $methodTrap = new ArgumentTrap();
-        $argumentsTrap = new ArgumentTrap();
+        $nameTrap = new ArgTrap();
+        $methodTrap = new ArgTrap();
+        $argsTrap = new ArgTrap();
         $relationship
             ->when()
-                ->customerCallsWith('injectMethod', $nameTrap, $methodTrap)
+                ->methodCallsWith('injectMethod', $nameTrap, $methodTrap)
             ->andThen()
-                ->customerCallsWith('__call', new ArgumentFilter($nameTrap), $argumentsTrap);
+                ->methodCallsWith('__call', new ArgFilter($nameTrap), $argsTrap);
         $relationship
             ->then()
-                ->closureIsCalledWithParam($methodTrap, $argumentsTrap);
+                ->closureIsCalledWithParam($methodTrap, $argsTrap);
         return $relationship;
     }
 
-    /**
-     * Relationship: getInjectMethodAndCallRelationship
-     */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $args)
     {
         $jobType = $this->addCallJobType(__FUNCTION__, $name);
         $job = new Job();
         $job->jobType = $jobType;
-        $job->arguments = \func_get_args();
+        $job->args = \func_get_args();
         return $this->contractor->perform($job);
     }
 
     private function addCallJobType(string $jobName, string $nameArg): JobType
     {
         $jobType = new JobType($jobName);
-        $jobType->addRelationship($this->getInjectMethodAndCallRelationship($nameArg, null));
         $precondition = new Condition();
         $preconditionAnyClosure = new Any(\Closure::class);
         $precondition->customerCalledWith('injectMethod', $nameArg, $preconditionAnyClosure); // required arguments left off can be anything

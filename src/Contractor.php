@@ -6,7 +6,17 @@ namespace StillDreamingOne\PurposefulPhp;
 final class Contractor
 {
     private $customer;
+    /**
+     * @var Condition[]
+     */
+    private $relationshipGroup;
+    /**
+     * @var JobType[]
+     */
     private $jobTypeGroup;
+    /**
+     * @var ?Job
+     */
     private $currentJob;
     private $properties;
 
@@ -20,6 +30,11 @@ final class Contractor
     public function setCustomer($customer): void
     {
         $this->customer = $customer;
+    }
+
+    public function addRelationship(Condition $relationship)
+    {
+        $this->relationshipGroup[] = $relationship;
     }
 
     public function addJobType(JobType $jobType): void
@@ -43,23 +58,23 @@ final class Contractor
         /*         if ($callResult->wasSuccessful) { */
         /*             return $callResult->value; */
         /*         } */
-        /*         $this->throwMissingMethodException($job->arguments[0]); */
+        /*         $this->throwMissingMethodException($job->args[0]); */
         /*     } */
         /* } */
     }
 
     private function performInjection(): void
     {
-        $this->properties['injectedMethodGroup'][] = array($this->currentJob->arguments[0], $this->currentJob->arguments[1]);
+        $this->properties['injectedMethodGroup'][] = array($this->currentJob->args[0], $this->currentJob->args[1]);
     }
 
     private function tryPerformCallInjected(): Result
     {
         $result = new Result();
         foreach ($this->properties['injectedMethodGroup'] as $injectedMethod) {
-            if ($injectedMethod[0] === $this->currentJob->arguments[0]) {
+            if ($injectedMethod[0] === $this->currentJob->args[0]) {
                 $result->wasSuccessful = true;
-                $result->value = \call_user_func_array($injectedMethod[1], $this->currentJob->arguments[1]);
+                $result->value = \call_user_func_array($injectedMethod[1], $this->currentJob->args[1]);
                 break;
             }
         }

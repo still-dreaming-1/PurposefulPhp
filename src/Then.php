@@ -5,7 +5,18 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class Then
 {
-    public function closureIsCalledWithParam(ArgumentTrap $method, ArgumentTrap $argumentsParamName): void
+    /**
+     * @var ArgTrap
+     */
+    private $methodTrap;
+    /**
+     * @var ArgTrap
+     */
+    private $argsTrap;
+
+    public function closureIsCalledWithParam(ArgTrap $methodTrap, ArgTrap $argsTrap): void
     {
+        $this->methodTrap = $methodTrap;
+        $this->argsTrap = $argsTrap;
     }
 }

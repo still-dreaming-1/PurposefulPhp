@@ -8,7 +8,7 @@ final class Job
     /**
      * @var array
      */
-    public $arguments;
+    public $args;
     /**
      * @var \StillDreamingOne\PurposefulPhp\JobType
      */
@@ -16,6 +16,6 @@ final class Job
 
     public function __construct()
     {
-        $this->arguments = [];
+        $this->args = [];
     }
 }
