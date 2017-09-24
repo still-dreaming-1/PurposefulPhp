@@ -6,11 +6,11 @@ namespace StillDreamingOne\PurposefulPhp;
 final class Then
 {
     /**
-     * @var ArgTrap
+     * @var ?ArgTrap
      */
     private $methodTrap;
     /**
-     * @var ArgTrap
+     * @var ?ArgTrap
      */
     private $argsTrap;
 
@@ -18,5 +18,14 @@ final class Then
     {
         $this->methodTrap = $methodTrap;
         $this->argsTrap = $argsTrap;
+    }
+
+    public function isValid(): bool
+    {
+        if ($this->methodTrap === null)
+            return false;
+        if ($this->argsTrap === null)
+            return false;
+        return true;
     }
 }

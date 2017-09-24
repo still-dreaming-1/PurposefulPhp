@@ -44,23 +44,10 @@ final class Contractor
 
     public function perform(Job $job)
     {
-        /* $this->currentJob = $job; */
-        /* $relationshipGroup = $job->jobType->getRelationships(); */
-        /* foreach ($relationshipGroup as $relationship) { */
-        /*     if ($relationship->getPerformedBefore() !== null) { */
-        /*         $this->performInjection(); */
-        /*         return; */
-        /*     } */
-        /* } */
-        /* foreach ($relationshipGroup as $relationship) { */
-        /*     if ($relationship->getPerformedAfter() !== null) { */
-        /*         $callResult = $this->tryPerformCallInjected(); */
-        /*         if ($callResult->wasSuccessful) { */
-        /*             return $callResult->value; */
-        /*         } */
-        /*         $this->throwMissingMethodException($job->args[0]); */
-        /*     } */
-        /* } */
+        foreach ($this->relationshipGroup as $relationship) {
+            $relationship->validate();
+            $when = $relationship->getWhen();
+        }
     }
 
     private function performInjection(): void

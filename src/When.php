@@ -42,4 +42,16 @@ final class When
         }
         return $this->relationship;
     }
+
+    public function validate(): void
+    {
+        if (!$this->isValid()) {
+            throw new PurposefulException("Invalid when");
+        }
+    }
+
+    public function isValid(): bool
+    {
+        return $this->methodName !== null && $this->methodArgGroup !== null;
+    }
 }

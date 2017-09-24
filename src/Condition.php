@@ -6,7 +6,7 @@ namespace StillDreamingOne\PurposefulPhp;
 final class Condition
 {
     /**
-     * @var When
+     * @var ?When
      */
     private $when;
     /**
@@ -14,7 +14,7 @@ final class Condition
      */
     private $andThen;
     /**
-     * @var Then
+     * @var ?Then
      */
     private $then;
     /**
@@ -26,9 +26,19 @@ final class Condition
         return $this->when;
     }
 
+    public function getWhen(): ?When
+    {
+        return $this->when;
+    }
+
     public function andThen(): When
     {
         $this->andThen = new When($this);
+        return $this->andThen;
+    }
+
+    public function getAndThen(): ?When
+    {
         return $this->andThen;
     }
 
@@ -36,6 +46,26 @@ final class Condition
     {
         $this->then = new Then();
         return $this->then;
+    }
+
+    public function validate(): void
+    {
+        if (!$this->isValid()) {
+            throw new PurposefulException("invalid relationship");
+        }
+    }
+
+    public function isValid(): bool
+    {
+        if ($this->when === null)
+            return false;
+        if (!$this->when->isValid())
+            return false;
+        if ($this->then === null)
+            return false;
+        if (!$this->then->isValid())
+            return false;
+        return true;
     }
 
     public function customerCalledWith(string $methodName, $nameArg, $preconditionAnyClosure): void

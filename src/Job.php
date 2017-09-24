@@ -10,7 +10,7 @@ final class Job
      */
     public $args;
     /**
-     * @var \StillDreamingOne\PurposefulPhp\JobType
+     * @var JobType
      */
     public $jobType;
 
