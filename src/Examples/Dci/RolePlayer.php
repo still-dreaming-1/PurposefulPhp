@@ -8,6 +8,7 @@ use StillDreamingOne\PurposefulPhp\{
     JobType,
     Job,
     Condition,
+    Any,
     Argument,
     ArgumentTrap,
     ArgumentFilter
@@ -56,7 +57,7 @@ final class RolePlayer
      *     }
      * }
      */
-    private function getInjectMethodAndCallRelationship(string $name, \Closure $method): Condition
+    private function getInjectMethodAndCallRelationship(string $name, ?\Closure $method): Condition
     {
         $relationship = new Condition();
         $nameTrap = new ArgumentTrap();
@@ -78,19 +79,19 @@ final class RolePlayer
      */
     public function __call(string $name, array $arguments)
     {
-        $jobType = $this->addCallJobType(__FUNCTION__, $name, $arguments);
+        $jobType = $this->addCallJobType(__FUNCTION__, $name);
         $job = new Job();
         $job->jobType = $jobType;
         $job->arguments = \func_get_args();
         return $this->contractor->perform($job);
     }
 
-    private function addCallJobType(string $jobName, string $nameArg, array $argumentsArg): JobType
+    private function addCallJobType(string $jobName, string $nameArg): JobType
     {
         $jobType = new JobType();
         $jobType->setName($jobName);
 
-        $jobType->addRelationship($this->getInjectMethodAndCallRelationship());
+        $jobType->addRelationship($this->getInjectMethodAndCallRelationship($nameArg, null));
         $precondition = new Condition();
         $preconditionAnyClosure = new Any(\Closure::class);
         $precondition->customerCalledWith('injectMethod', $nameArg, $preconditionAnyClosure); // required arguments left off can be anything

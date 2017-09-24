@@ -14,6 +14,10 @@ final class JobType
      * @var array
      */
     private $relationshipGroup;
+    /**
+     * @var
+     */
+    private $preconditionGroup;
 
     public function __construct()
     {
@@ -36,14 +40,19 @@ final class JobType
         return $this->name;
     }
 
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function addRelationship(Condition $relationship)
+    public function addRelationship(Condition $relationship): void
     {
         $this->relationshipGroup[] = $relationship;
+    }
+
+    public function addPrecondition(Condition $precondition): void
+    {
+        $this->preconditionGroup[] = $precondition;
     }
 
     public function getRelationships(): array

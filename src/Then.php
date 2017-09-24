@@ -5,7 +5,7 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class Then
 {
-    public function closureIsCalledWithParam(ArgumentTrap $method, ArgumentTrap $argumentsParamName)
+    public function closureIsCalledWithParam(ArgumentTrap $method, ArgumentTrap $argumentsParamName): void
     {
     }
 }

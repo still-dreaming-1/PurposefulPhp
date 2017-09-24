@@ -8,7 +8,7 @@ final class When
     /**
      * After $methodName, pass the parameters it is called with
      */
-    public function customerCallsWith(string $methodName)
+    public function customerCallsWith(string $methodName): void
     {
         $arguments = \func_get_args();
     }

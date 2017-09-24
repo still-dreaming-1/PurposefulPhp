@@ -14,4 +14,8 @@ final class Condition
     {
         return new Then();
     }
+
+    public function customerCalledWith(string $methodName, $nameArg, $preconditionAnyClosure): void
+    {
+    }
 }
