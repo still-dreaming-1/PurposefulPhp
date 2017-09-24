@@ -26,6 +26,9 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
         $this->assertIsDciMissingMethodException($missingMethodName, $exception);
     }
 
+    /**
+     * @return string[][]
+     */
     public function provideMissingMethodNames(): array
     {
         return [
