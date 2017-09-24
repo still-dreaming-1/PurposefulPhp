@@ -17,7 +17,9 @@ final class Condition
      * @var Then
      */
     private $then;
-
+    /**
+     * @var ?string
+     */
     public function when(): When
     {
         $this->when = new When($this);

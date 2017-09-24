@@ -39,8 +39,7 @@ final class RolePlayer
 
     private function addInjectMethodJobType(string $jobName, string $nameParam, \Closure $methodParam): JobType
     {
-        $jobType = new JobType();
-        $jobType->setName($jobName);
+        $jobType = new JobType($jobName);
         $jobType->addRelationship($this->getInjectMethodAndCallRelationship($nameParam, $methodParam));
         $this->contractor->addJobType($jobType);
         return $jobType;
@@ -88,9 +87,7 @@ final class RolePlayer
 
     private function addCallJobType(string $jobName, string $nameArg): JobType
     {
-        $jobType = new JobType();
-        $jobType->setName($jobName);
-
+        $jobType = new JobType($jobName);
         $jobType->addRelationship($this->getInjectMethodAndCallRelationship($nameArg, null));
         $precondition = new Condition();
         $preconditionAnyClosure = new Any(\Closure::class);

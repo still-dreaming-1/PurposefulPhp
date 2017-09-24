@@ -29,23 +29,23 @@ final class Contractor
 
     public function perform(Job $job)
     {
-        $this->currentJob = $job;
-        $relationshipGroup = $job->jobType->getRelationships();
-        foreach ($relationshipGroup as $relationship) {
-            if ($relationship->getPerformedBefore() !== null) {
-                $this->performInjection();
-                return;
-            }
-        }
-        foreach ($relationshipGroup as $relationship) {
-            if ($relationship->getPerformedAfter() !== null) {
-                $callResult = $this->tryPerformCallInjected();
-                if ($callResult->wasSuccessful) {
-                    return $callResult->value;
-                }
-                $this->throwMissingMethodException($job->arguments[0]);
-            }
-        }
+        /* $this->currentJob = $job; */
+        /* $relationshipGroup = $job->jobType->getRelationships(); */
+        /* foreach ($relationshipGroup as $relationship) { */
+        /*     if ($relationship->getPerformedBefore() !== null) { */
+        /*         $this->performInjection(); */
+        /*         return; */
+        /*     } */
+        /* } */
+        /* foreach ($relationshipGroup as $relationship) { */
+        /*     if ($relationship->getPerformedAfter() !== null) { */
+        /*         $callResult = $this->tryPerformCallInjected(); */
+        /*         if ($callResult->wasSuccessful) { */
+        /*             return $callResult->value; */
+        /*         } */
+        /*         $this->throwMissingMethodException($job->arguments[0]); */
+        /*     } */
+        /* } */
     }
 
     private function performInjection(): void

@@ -5,22 +5,26 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class JobType
 {
+    /**
+     * @var string
+     */
     private $name;
     /**
-     * @var array
+     * @var \StillDreamingOne\PurposefulPhp\Condition[]
      */
     private $postconditionGroup;
     /**
-     * @var array
+     * @var \StillDreamingOne\PurposefulPhp\Condition[]
      */
     private $relationshipGroup;
     /**
-     * @var
+     * @var \StillDreamingOne\PurposefulPhp\Condition[]
      */
     private $preconditionGroup;
 
-    public function __construct()
+    public function __construct(string $name)
     {
+        $this->name = $name;
         $this->postconditionGroup = [];
         $this->relationshipGroup = [];
     }
@@ -40,11 +44,6 @@ final class JobType
         return $this->name;
     }
 
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
     public function addRelationship(Condition $relationship): void
     {
         $this->relationshipGroup[] = $relationship;
@@ -55,6 +54,9 @@ final class JobType
         $this->preconditionGroup[] = $precondition;
     }
 
+    /**
+     * @return Condition[]
+     */
     public function getRelationships(): array
     {
         return $this->relationshipGroup;
