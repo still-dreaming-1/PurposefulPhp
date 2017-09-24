@@ -54,6 +54,9 @@ final class RolePlayerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($this->object->$injectMethodName(), $returnValue);
     }
 
+    /**
+     * @return array[]
+     */
     public function provideInjectMethodNamesAndReturnValues(): array
     {
         return [
