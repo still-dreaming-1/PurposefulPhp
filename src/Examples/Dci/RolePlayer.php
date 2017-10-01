@@ -27,22 +27,6 @@ final class RolePlayer
         $this->contractor->addRelationship($this->getInjectMethodAndCallRelationship());
     }
 
-    public function injectMethod(string $name, \Closure $method): void
-    {
-        $jobType = $this->addInjectMethodJobType(__FUNCTION__, $name, $method);
-        $job = new Job();
-        $job->jobType = $jobType;
-        $job->args = \func_get_args();
-        $this->contractor->perform($job);
-    }
-
-    private function addInjectMethodJobType(string $jobName, string $methodName, \Closure $method): JobType
-    {
-        $jobType = new JobType($jobName);
-        $this->contractor->addJobType($jobType);
-        return $jobType;
-    }
-
     /**
      * when {
      *     $this->injectMethod($name, $method)
@@ -69,6 +53,22 @@ final class RolePlayer
             ->then()
                 ->closureIsCalledWithParam($methodTrap, $argsTrap);
         return $relationship;
+    }
+
+    public function injectMethod(string $name, \Closure $method): void
+    {
+        $jobType = $this->addInjectMethodJobType(__FUNCTION__, $name, $method);
+        $job = new Job();
+        $job->jobType = $jobType;
+        $job->args = \func_get_args();
+        $this->contractor->perform($job);
+    }
+
+    private function addInjectMethodJobType(string $jobName, string $methodName, \Closure $method): JobType
+    {
+        $jobType = new JobType($jobName);
+        $this->contractor->addJobType($jobType);
+        return $jobType;
     }
 
     public function __call(string $name, array $args)
