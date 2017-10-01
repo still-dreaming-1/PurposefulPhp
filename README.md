@@ -24,3 +24,11 @@ Once it is working, here some possibilities I think it would eventually open up,
 
 * The computer can work around the clock to invent and run new ways of testing your code, making your code more and more tested.
 * The computer can constantly work on improving the efficiency of the algorithms that would be used to fulffill the contracts in your code, making your code more and more optimized over time.
+
+PurposefulPhp is inspired by, and aspires to be something more than the ideas promoted by and contained within:
+* Uncle Bob (Robert C. Martin)
+* TDD (test driven development)
+* BDD (behavior driven development)
+* The transformation priority premise
+* James Coplien
+* Contract driven development
