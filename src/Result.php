@@ -5,9 +5,7 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class Result
 {
-    /**
-     * @var bool
-     */
+    /** @var bool */
     public $wasSuccessful = false;
     public $value;
 }

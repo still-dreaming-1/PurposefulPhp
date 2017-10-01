@@ -5,13 +5,9 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class Then
 {
-    /**
-     * @var ?ArgTrap
-     */
+    /** @var ?ArgTrap */
     private $methodTrap;
-    /**
-     * @var ?ArgTrap
-     */
+    /** @var ?ArgTrap */
     private $argsTrap;
 
     public function closureIsCalledWithParam(ArgTrap $methodTrap, ArgTrap $argsTrap): void
@@ -22,10 +18,12 @@ final class Then
 
     public function isValid(): bool
     {
-        if ($this->methodTrap === null)
+        if ($this->methodTrap === null) {
             return false;
-        if ($this->argsTrap === null)
+        }
+        if ($this->argsTrap === null) {
             return false;
+        }
         return true;
     }
 }

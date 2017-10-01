@@ -17,9 +17,7 @@ use StillDreamingOne\PurposefulPhp\{
 // helps with the DCI style of OO in php
 final class RolePlayer
 {
-    /**
-     * @var Contractor
-     */
+    /** @var Contractor */
     private $contractor;
 
     public function __construct()

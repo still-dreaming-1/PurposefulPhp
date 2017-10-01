@@ -5,13 +5,9 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class Job
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     public $args;
-    /**
-     * @var JobType
-     */
+    /** @var JobType */
     public $jobType;
 
     public function __construct()

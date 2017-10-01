@@ -5,17 +5,11 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class JobType
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $name;
-    /**
-     * @var Condition[]
-     */
+    /** @var Condition[] */
     private $postconditionGroup;
-    /**
-     * @var Condition[]
-     */
+    /** @var Condition[] */
     private $preconditionGroup;
 
     public function __construct(string $name)

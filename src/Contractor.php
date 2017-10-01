@@ -6,17 +6,11 @@ namespace StillDreamingOne\PurposefulPhp;
 final class Contractor
 {
     private $customer;
-    /**
-     * @var Condition[]
-     */
+    /** @var Condition[] */
     private $relationshipGroup;
-    /**
-     * @var JobType[]
-     */
+    /** @var JobType[] */
     private $jobTypeGroup;
-    /**
-     * @var ?Job
-     */
+    /** @var ?Job */
     private $currentJob;
     private $properties;
 

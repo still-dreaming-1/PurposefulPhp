@@ -5,17 +5,11 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class When
 {
-    /**
-     * @var Condition
-     */
+    /** @var Condition */
     private $relationship;
-    /**
-     * @var ?string
-     */
+    /** @var ?string */
     private $methodName;
-    /**
-     * @var ?array
-     */
+    /** @var ?array */
     private $methodArgGroup;
 
     public function __construct(Condition $relationship)

@@ -5,9 +5,7 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class Any
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $class;
 
     public function __construct(string $class)

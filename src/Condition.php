@@ -5,21 +5,13 @@ namespace StillDreamingOne\PurposefulPhp;
 
 final class Condition
 {
-    /**
-     * @var ?When
-     */
+    /** @var ?When */
     private $when;
-    /**
-     * @var When
-     */
+    /** @var When */
     private $andThen;
-    /**
-     * @var ?Then
-     */
+    /** @var ?Then */
     private $then;
-    /**
-     * @var ?string
-     */
+    /** @var ?string */
     public function when(): When
     {
         $this->when = new When($this);
