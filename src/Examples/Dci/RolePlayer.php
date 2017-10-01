@@ -48,8 +48,7 @@ final class RolePlayer
             ->when()
                 ->methodCallsWith('injectMethod', $nameTrap, $methodTrap)
             ->andThen()
-                ->methodCallsWith('__call', new ArgFilter($nameTrap), $argsTrap);
-        $relationship
+                ->methodCallsWith('__call', new ArgFilter($nameTrap), $argsTrap)
             ->then()
                 ->closureIsCalledWithParam($methodTrap, $argsTrap);
         return $relationship;
@@ -84,8 +83,9 @@ final class RolePlayer
     {
         $jobType = new JobType($jobName);
         $precondition = new Condition();
-        $preconditionAnyClosure = new Any(\Closure::class);
-        $precondition->customerCalledWith('injectMethod', $nameArg, $preconditionAnyClosure); // required arguments left off can be anything
+        $anyClosure = new Any(\Closure::class);
+        // required arguments left off can be anything
+        $precondition->customerCalledWith('injectMethod', $nameArg, $anyClosure);
         $jobType->addPrecondition($precondition);
 
         $this->contractor->addJobType($jobType);

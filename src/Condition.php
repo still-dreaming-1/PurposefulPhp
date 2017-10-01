@@ -60,7 +60,19 @@ final class Condition
         return true;
     }
 
-    public function customerCalledWith(string $methodName, $nameArg, $preconditionAnyClosure): void
+    public function customerCalledWith(string $methodName, $nameArg, $anyClosure): void
     {
+        $first = true;
+        foreach(\func_get_args() as $arg) {
+            if ($first) {
+                continue;
+            }
+            $first = false;
+            if (!($arg instanceof ArgTrap) && (!($arg instanceof ArgFilter))) {
+                throw new PurposefulException("expected argument to be an ArgTrap or ArgFilter");
+            }
+            $this->methodArgGroup[] = $arg;
+        }
+        return $this->relationship;
     }
 }
