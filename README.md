@@ -16,7 +16,7 @@ Here are some ways  to describe PurposefulPhp:
 * Write what you want the code to do (not how), and let the computer figure out how.
 * A contract fulfiller
 * Contracts as code (instead of contracts plus code).
-* A programming paradigm that is perhaps a flavor of declarative programming, or at least has some things in common with it. Structured programming took away gotos. Functional programming took away assignments. Object oriented programming took away function references, or something like that. Purposeful programming takes away explicityly writing implementations and tests.
+* A different approach to the logic/constraint programming paradigm that I call purposeful programming. Compared to other examples of logic programming, this is less niche and more generally useful as a normal way of writing code. Your PHP code for expressing contracts will resemble an SQL like language that essentially implements class methods. Structured programming took away gotos. Functional programming took away assignments. Object oriented programming took away function pointers. Purposeful programming takes away explicityly writing implementations and tests.
 
 PurposefulPhp will provide a way to program on a higher level. Writing code with it will feel familiar to people who are already familiar with writing object oriented code in PHP. As much as it might sound like it, it is not used to write machine learning or AI programs, but I guess you could do that with it if you want. It is a way of expressing classes in terms of contracts.
 
