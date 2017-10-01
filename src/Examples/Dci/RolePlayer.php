@@ -11,7 +11,8 @@ use StillDreamingOne\PurposefulPhp\{
     Any,
     Arg,
     ArgTrap,
-    ArgFilter
+    ArgFilter,
+    CustomerCalledWithCondition
 };
 
 // helps with the DCI style of OO in php
@@ -82,12 +83,11 @@ final class RolePlayer
     private function addCallJobType(string $jobName, string $nameArg): JobType
     {
         $jobType = new JobType($jobName);
-        $precondition = new Condition();
+        $precondition = new CustomerCalledWithCondition();
+        $precondition->setMethodName('injectMethod');
         $anyClosure = new Any(\Closure::class);
-        // required arguments left off can be anything
-        $precondition->customerCalledWith('injectMethod', $nameArg, $anyClosure);
+        $precondition->setMethodArgs([$nameArg, $anyClosure]);
         $jobType->addPrecondition($precondition);
-
         $this->contractor->addJobType($jobType);
         return $jobType;
     }

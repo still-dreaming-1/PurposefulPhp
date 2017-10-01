@@ -11,6 +11,7 @@ final class Condition
     private $andThen;
     /** @var ?Then */
     private $then;
+
     /** @var ?string */
     public function when(): When
     {
@@ -58,21 +59,5 @@ final class Condition
         if (!$this->then->isValid())
             return false;
         return true;
-    }
-
-    public function customerCalledWith(string $methodName, $nameArg, $anyClosure): void
-    {
-        $first = true;
-        foreach(\func_get_args() as $arg) {
-            if ($first) {
-                continue;
-            }
-            $first = false;
-            if (!($arg instanceof ArgTrap) && (!($arg instanceof ArgFilter))) {
-                throw new PurposefulException("expected argument to be an ArgTrap or ArgFilter");
-            }
-            $this->methodArgGroup[] = $arg;
-        }
-        return $this->relationship;
     }
 }

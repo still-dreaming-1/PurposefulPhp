@@ -9,7 +9,7 @@ final class JobType
     private $name;
     /** @var Condition[] */
     private $postconditionGroup;
-    /** @var Condition[] */
+    /** @var CustomerCalledWithCondition[] */
     private $preconditionGroup;
 
     public function __construct(string $name)
@@ -33,7 +33,7 @@ final class JobType
         return $this->name;
     }
 
-    public function addPrecondition(Condition $precondition): void
+    public function addPrecondition(CustomerCalledWithCondition $precondition): void
     {
         $this->preconditionGroup[] = $precondition;
     }
