@@ -5,6 +5,7 @@ namespace StillDreamingOne\PurposefulPhp\Examples\Dci;
 
 final class RolePlayerTest extends \PHPUnit\Framework\TestCase
 {
+    /** @var RolePlayer */
     private $object;
 
     public function setup()
