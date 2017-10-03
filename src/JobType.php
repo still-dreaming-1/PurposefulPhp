@@ -15,6 +15,7 @@ final class JobType
     public function __construct(string $name)
     {
         $this->name = $name;
+        $this->preconditionGroup = [];
         $this->postconditionGroup = [];
     }
 
@@ -36,5 +37,11 @@ final class JobType
     public function addPrecondition(CustomerCalledWithCondition $precondition): void
     {
         $this->preconditionGroup[] = $precondition;
+    }
+
+    /** @return CustomerCalledWithCondition[] */
+    public function getPreconditionGroup(): array
+    {
+        return $this->preconditionGroup;
     }
 }
