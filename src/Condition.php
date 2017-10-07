@@ -50,14 +50,21 @@ final class Condition
 
     public function isValid(): bool
     {
-        if ($this->when === null)
+        if ($this->when === null) {
             return false;
-        if (!$this->when->isValid())
+        }
+        if (!$this->when->isValid()) {
             return false;
-        if ($this->then === null)
+        }
+        if ($this->andThen !== null && !$this->andThen->isValid()) {
             return false;
-        if (!$this->then->isValid())
+        }
+        if ($this->then === null) {
             return false;
+        }
+        if (!$this->then->isValid()) {
+            return false;
+        }
         return true;
     }
 }
