@@ -16,6 +16,7 @@ final class When
     {
         $this->relationship = $relationship;
     }
+
     /**
      * After $methodName, pass the parameters it is called with
      */
@@ -47,5 +48,21 @@ final class When
     public function isValid(): bool
     {
         return $this->methodName !== null && $this->methodArgGroup !== null;
+    }
+
+    /**
+     * Updates self given the Job currently being performed. Could affect ->isSatisfied()
+     */
+    public function update(Job $currentJob)
+    {
+        if ($this->methodName === $job->jobType->name) {
+            foreach($this->methodArgGroup as $arg) {
+            }
+        }
+    }
+
+    public function isSatisfied(): bool
+    {
+        return false;
     }
 }

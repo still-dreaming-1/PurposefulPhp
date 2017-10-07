@@ -26,4 +26,12 @@ final class Then
         }
         return true;
     }
+
+    /**
+     * Executes this Then. Does not execute the $currentJob, executes this Then. The $currentJob is just the job that is
+     * currently being performed by the Contractor
+     */
+    public function execute(Job $currentJob)
+    {
+    }
 }

@@ -70,4 +70,29 @@ final class Condition
     {
         return $this->then === null ? false : $this->then->isValid();
     }
+
+    public function support(Job $job)
+    {
+        if ($this->when === null) {
+            throw new PurposefulException("Invalid when");
+        }
+        $this->when->update($job);
+        if ($when->isSatisfied()) {
+            $whenConditionsMet = false;
+            if ($this->andThen === null) {
+                $whenConditionsMet = true;
+            } else {
+                $this->andThen->update($job);
+                if ($this->andThen->isSatisfied()) {
+                    $whenConditionsMet = true;
+                }
+            }
+            if ($whenConditionsMet) {
+                if ($this->then === null) {
+                    throw new PurposefulException("Invalid then");
+                }
+                $this->then->execute($job);
+            }
+        }
+    }
 }

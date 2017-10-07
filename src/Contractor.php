@@ -40,7 +40,7 @@ final class Contractor
     {
         foreach ($this->relationshipGroup as $relationship) {
             $relationship->validate();
-            $when = $relationship->getWhen();
+            $relationship->support($job);
         }
     }
 
