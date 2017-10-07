@@ -50,21 +50,24 @@ final class Condition
 
     public function isValid(): bool
     {
-        if ($this->when === null) {
-            return false;
-        }
-        if (!$this->when->isValid()) {
-            return false;
-        }
-        if ($this->andThen !== null && !$this->andThen->isValid()) {
-            return false;
-        }
-        if ($this->then === null) {
-            return false;
-        }
-        if (!$this->then->isValid()) {
-            return false;
-        }
-        return true;
+        return $this->whenIsValid()
+            && $this->andThenIsValid()
+            && $this->thenIsValid();
+    }
+
+    private function whenIsValid(): bool
+    {
+        $this->when === null ? is_bool(true) : $this->when->isValid();
+        return $this->when === null ? false : $this->when->isValid();
+    }
+
+    private function andThenIsValid(): bool
+    {
+        return $this->andThen === null ? true : $this->andThen->isValid();
+    }
+
+    private function thenIsValid(): bool
+    {
+        return $this->then === null ? false : $this->then->isValid();
     }
 }
